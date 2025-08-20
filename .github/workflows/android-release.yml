@@ -24,6 +24,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
@@ -32,7 +37,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: apps/mobile
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       # - name: Create production .env file
       #   working-directory: apps/mobile
