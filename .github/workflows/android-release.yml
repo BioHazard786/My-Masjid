@@ -157,7 +157,7 @@ jobs:
             ## 📋 System Requirements
 
             - Android 7.0 (API level 24) or higher
-            - Permissions: Contacts, Phone
+            - Permissions: Internet
 
       - name: Upload arm64-v8a APK
         uses: actions/upload-release-asset@v1
@@ -179,24 +179,14 @@ jobs:
           asset_name: my-masjid-armeabi-v7a-${{ steps.tag.outputs.tag }}.apk
           asset_content_type: application/vnd.android.package-archive
 
-      - name: Upload x86_64 APK
+      - name: Upload Universal APK
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: apps/mobile/android/app/build/outputs/apk/release/app-x86_64-release.apk
-          asset_name: my-masjid-x86_64-${{ steps.tag.outputs.tag }}.apk
-          asset_content_type: application/vnd.android.package-archive
-
-      - name: Upload x86 APK
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: apps/mobile/android/app/build/outputs/apk/release/app-x86-release.apk
-          asset_name: my-masjid-x86-${{ steps.tag.outputs.tag }}.apk
+          asset_path: apps/mobile/android/app/build/outputs/apk/release/app-universal-release.apk
+          asset_name: my-masjid-universal-${{ steps.tag.outputs.tag }}.apk
           asset_content_type: application/vnd.android.package-archive
 
       - name: Upload metadata

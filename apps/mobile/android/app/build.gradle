@@ -3,7 +3,6 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 apply from: 'with-okhttp.gradle'
-// apply from: 'with-release-config.gradle'
 apply from: 'with-abi-splits.gradle'
 apply from: 'with-strip-so-files.gradle'
 
