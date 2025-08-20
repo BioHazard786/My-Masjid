@@ -1,6 +1,11 @@
+
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply from: 'with-okhttp.gradle'
+// apply from: 'with-release-config.gradle'
+apply from: 'with-abi-splits.gradle'
+apply from: 'with-strip-so-files.gradle'
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
@@ -137,15 +142,6 @@ android {
         }
     }
 
-    splits {
-        abi {
-            reset()
-            enable = true
-            universalApk = false
-            include "arm64-v8a", "armeabi-v7a", "x86", "x86_64"
-        }
-    }
-
     packagingOptions {
         jniLibs {
             useLegacyPackaging (findProperty('expo.useLegacyPackaging')?.toBoolean() ?: false)
@@ -213,58 +209,3 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
-
-// --- Custom task to strip .so files and remove NT_GNU_BUILD_ID ---
-
-def getLLVMStrip() {
-    def sdkDir = android.sdkDirectory
-    def ndkVersion = android.ndkVersion
-    if (!sdkDir || !ndkVersion) throw new GradleException("NDK path or version not found. Ensure android.sdkDirectory and android.ndkVersion are set.")
-    def exe = Os.isFamily(Os.FAMILY_WINDOWS) ? 'llvm-strip.exe' : 'llvm-strip'
-    def hostTag
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        hostTag = 'windows-x86_64'
-    } else if (Os.isFamily(Os.FAMILY_MAC)) {
-        hostTag = 'darwin-x86_64'
-    } else {
-        hostTag = 'linux-x86_64'
-    }
-    def pathSeparator = Os.isFamily(Os.FAMILY_WINDOWS) ? '\\' : '/'
-    def ndkPath = "ndk${pathSeparator}${ndkVersion}${pathSeparator}toolchains${pathSeparator}llvm${pathSeparator}prebuilt${pathSeparator}${hostTag}${pathSeparator}bin${pathSeparator}${exe}"
-    return new File(sdkDir, ndkPath).absolutePath
-}
-
-def createStripTaskForVariant(variantName, libDir) {
-    tasks.register("stripSoFiles${variantName}") {
-        doLast {
-            def strip = getLLVMStrip()
-            def soFiles = fileTree(dir: libDir, include: '**/*.so')
-            if (!soFiles.isEmpty()) {
-                soFiles.each { soFile ->
-                    exec {
-                        commandLine strip, '--remove-section=.note.gnu.build-id', soFile
-                    }
-                    println "Stripping NT_GNU_BUILD_ID from: ${soFile}"
-                }
-            } else {
-                println "No .so files found to strip for ${variantName}."
-            }
-        }
-    }
-}
-
-afterEvaluate {
-    android.applicationVariants.all { variant ->
-        def capName = variant.name.capitalize()
-        def pathSeparator = Os.isFamily(Os.FAMILY_WINDOWS) ? '\\' : '/'
-        def libDir = "${buildDir}${pathSeparator}intermediates${pathSeparator}merged_native_libs${pathSeparator}${variant.name}${pathSeparator}mergeReleaseNativeLibs${pathSeparator}out${pathSeparator}lib"
-        createStripTaskForVariant(capName, libDir)
-        def stripTask = tasks["stripSoFiles${capName}"]
-        if (tasks.findByName("merge${capName}NativeLibs")) {
-            tasks["merge${capName}NativeLibs"].finalizedBy(stripTask)
-        }
-        if (tasks.findByName("package${capName}")) {
-            tasks["package${capName}"].mustRunAfter(stripTask)
-        }
-    }
-}

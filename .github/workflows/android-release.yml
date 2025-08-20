@@ -133,7 +133,7 @@ jobs:
           draft: false
           prerelease: false
           body: |
-            # 🚀 My Masjid ${{ steps.tag.outputs.tag }} – ${{ steps.changelog.outputs.description }}
+            # 🕌 My Masjid ${{ steps.tag.outputs.tag }} – ${{ steps.changelog.outputs.description }}
 
             ## ✨ What's New in ${{ steps.tag.outputs.tag }}
 
