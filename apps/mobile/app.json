@@ -1,0 +1,193 @@
+{
+  "expo": {
+    "name": "My Masjid",
+    "slug": "my-masjid",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/android-icon.png",
+    "scheme": "mymasjid",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "icon": {
+        "dark": "./assets/images/ios-dark.png",
+        "light": "./assets/images/ios-light.png",
+        "tinted": "./assets/images/ios-tinted.png"
+      }
+    },
+    "android": {
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/android-icon.png",
+        "monochromeImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#f2f2f2"
+      },
+      "edgeToEdgeEnabled": true,
+      "softwareKeyboardLayoutMode": "pan",
+      "package": "com.lulu786.mymasjid",
+      "googleServicesFile": "google-services.json"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon-dark.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#f2f2f2",
+          "dark": {
+            "image": "./assets/images/splash-icon-light.png",
+            "backgroundColor": "#1c222e"
+          }
+        }
+      ],
+      "@react-native-community/datetimepicker",
+      "react-native-bottom-tabs",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      [
+        "react-native-edge-to-edge",
+        {
+          "android": {
+            "parentTheme": "Material3"
+          }
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/adaptive-icon.png",
+          "defaultChannel": "default"
+        }
+      ],
+      [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": ["en", "hi", "ur"],
+            "android": ["en", "hi", "ur"]
+          }
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "Poppins",
+                "fontDefinitions": [
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/100Thin/Poppins_100Thin.ttf",
+                    "weight": "100"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/100Thin_Italic/Poppins_100Thin_Italic.ttf",
+                    "weight": "100",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/200ExtraLight/Poppins_200ExtraLight.ttf",
+                    "weight": "200"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/200ExtraLight_Italic/Poppins_200ExtraLight_Italic.ttf",
+                    "weight": "200",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/300Light/Poppins_300Light.ttf",
+                    "weight": "300"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/300Light_Italic/Poppins_300Light_Italic.ttf",
+                    "weight": "300",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/400Regular/Poppins_400Regular.ttf",
+                    "weight": "400"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/400Regular_Italic/Poppins_400Regular_Italic.ttf",
+                    "weight": "400",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/500Medium/Poppins_500Medium.ttf",
+                    "weight": "500"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/500Medium_Italic/Poppins_500Medium_Italic.ttf",
+                    "weight": "500",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/600SemiBold/Poppins_600SemiBold.ttf",
+                    "weight": "600"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/600SemiBold_Italic/Poppins_600SemiBold_Italic.ttf",
+                    "weight": "600",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/700Bold/Poppins_700Bold.ttf",
+                    "weight": "700"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/700Bold_Italic/Poppins_700Bold_Italic.ttf",
+                    "weight": "700",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/800ExtraBold/Poppins_800ExtraBold.ttf",
+                    "weight": "800"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/800ExtraBold_Italic/Poppins_800ExtraBold_Italic.ttf",
+                    "weight": "800",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/900Black/Poppins_900Black.ttf",
+                    "weight": "900"
+                  },
+                  {
+                    "path": "../../node_modules/@expo-google-fonts/poppins/900Black_Italic/Poppins_900Black_Italic.ttf",
+                    "weight": "900",
+                    "style": "italic"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "supportsRTL": true,
+      "router": {},
+      "eas": {
+        "projectId": "d8b57b1a-73bb-47f2-88bd-41d21e55e6d4"
+      }
+    },
+    "owner": "lulu786"
+  }
+}

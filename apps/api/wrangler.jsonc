@@ -1,0 +1,41 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "my-masjid-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-07-29",
+  // "compatibility_flags": [
+  //   "nodejs_compat"
+  // ],
+  "vars": {
+    "GOOGLE_TRANSLATE_API_URL": "https://translate-pa.googleapis.com/v1/translateHtml",
+    "GOOGLE_TRANSLATE_API_HOST": "translate-pa.googleapis.com",
+    "GOOGLE_TRANSLATE_PUBLIC_API_URL": "https://translate.googleapis.com/translate_a/single",
+  },
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "MY_KV_NAMESPACE",
+  //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  //   }
+  // ],
+  // "r2_buckets": [
+  //   {
+  //     "binding": "MY_BUCKET",
+  //     "bucket_name": "my-bucket"
+  //   }
+  // ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-masjid-db",
+      "database_id": "49abac29-d5da-4678-ad96-505340d7193b",
+      "migrations_dir": ".drizzle-out",
+    },
+  ],
+  // "ai": {
+  //   "binding": "AI"
+  // },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+  },
+}

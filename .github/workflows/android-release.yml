@@ -1,0 +1,206 @@
+name: Android Release Build
+
+on:
+  push:
+    tags:
+      - "*"
+
+env:
+  NODE_VERSION: "18"
+  JAVA_VERSION: "17"
+  KEYSTORE_FILE: "release.keystore"
+
+jobs:
+  build:
+    name: Build and Release Android APKs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Install dependencies
+        working-directory: apps/mobile
+        run: npm ci
+
+      # - name: Create production .env file
+      #   working-directory: apps/mobile
+      #   run: |
+      #     echo "EXPO_PUBLIC_API_BASE_URL=${{ secrets.EXPO_PUBLIC_API_BASE_URL }}" > .env
+      #     echo "EXPO_NO_METRO_WORKSPACE_ROOT=true" >> .env
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: false
+
+      - name: Decode google-services.json
+        env:
+          GOOGLE_SERVICES_BASE64: ${{ secrets.GOOGLE_SERVICES_BASE64 }}
+        run: |
+          echo $GOOGLE_SERVICES_BASE64 | base64 -d > apps/mobile/google-services.json
+          echo $GOOGLE_SERVICES_BASE64 | base64 -d > apps/mobile/android/app/google-services.json
+
+      - name: Make gradlew executable
+        run: chmod +x apps/mobile/android/gradlew
+
+      - name: Decode Keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo $KEYSTORE_BASE64 | base64 -d > apps/mobile/android/app/${{ env.KEYSTORE_FILE }}
+
+      - name: Generate keystore.properties
+        run: |
+          cat <<EOF > apps/mobile/android/keystore.properties
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          storeFile=${{ env.KEYSTORE_FILE }}
+          EOF
+
+      - name: Build Release APKs
+        run: |
+          cd apps/mobile/android
+          ./gradlew assembleRelease
+
+      - name: Get tag name and version code
+        id: tag
+        run: |
+          echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          # Extract versionCode from app.json
+          VERSION_CODE=$(cat apps/mobile/app.json | grep -o '"versionCode":[[:space:]]*[0-9]\+' | grep -o '[0-9]\+')
+          echo "version_code=${VERSION_CODE}" >> $GITHUB_OUTPUT
+
+      - name: Get changelog from versionCode
+        id: changelog
+        run: |
+          VERSION_CODE=${{ steps.tag.outputs.version_code }}
+          echo "version_code=${VERSION_CODE}" >> $GITHUB_OUTPUT
+
+          # Read the changelog file based on versionCode
+          CHANGELOG_FILE="apps/mobile/fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt"
+          if [ -f "$CHANGELOG_FILE" ]; then
+            # Read the changelog content and format it
+            CHANGELOG_CONTENT=$(cat "$CHANGELOG_FILE")
+            # Extract version and description from the first line
+            VERSION_LINE=$(echo "$CHANGELOG_CONTENT" | head -n 1)
+            VERSION=$(echo "$VERSION_LINE" | cut -d' ' -f1)
+            DESCRIPTION=$(echo "$VERSION_LINE" | cut -d'–' -f2 | sed 's/^ *//')
+            if [ -z "$DESCRIPTION" ]; then
+              DESCRIPTION=$(echo "$VERSION_LINE" | cut -d'-' -f2- | sed 's/^ *//')
+            fi
+            
+            # Extract bullet points (skip the first line)
+            BULLET_POINTS=$(echo "$CHANGELOG_CONTENT" | tail -n +2 | sed 's/^[ ]*-[ ]*/- /')
+            
+            echo "version=${VERSION}" >> $GITHUB_OUTPUT
+            echo "description=${DESCRIPTION}" >> $GITHUB_OUTPUT
+            
+            # Save bullet points to a file to preserve multiline content
+            echo "$BULLET_POINTS" > changelog_bullets.txt
+            echo "changelog_file=changelog_bullets.txt" >> $GITHUB_OUTPUT
+          else
+            echo "version=${{ steps.tag.outputs.tag }}" >> $GITHUB_OUTPUT
+            echo "description=Latest Release" >> $GITHUB_OUTPUT
+            echo "- Latest improvements and bug fixes" > changelog_bullets.txt
+            echo "changelog_file=changelog_bullets.txt" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          release_name: Release ${{ steps.tag.outputs.tag }}
+          draft: false
+          prerelease: false
+          body: |
+            # 🚀 My Masjid ${{ steps.tag.outputs.tag }} – ${{ steps.changelog.outputs.description }}
+
+            ## ✨ What's New in ${{ steps.tag.outputs.tag }}
+
+            $(cat changelog_bullets.txt)
+
+            ## 📦 Download Options
+
+            Choose the APK that matches your device architecture:
+
+            - **ARM64 (64-bit)** – Recommended for most modern devices  
+            - **ARM (32-bit)** – For older Android devices  
+            - **x86 (64-bit)** – For Intel-based Android devices/emulators  
+            - **x86 (32-bit)** – For older Intel-based devices  
+
+            ## 🔧 Installation
+
+            1. Download the appropriate APK for your device
+            2. Enable "Install from unknown sources" in your Android settings
+            3. Install the APK file
+
+            ## 📋 System Requirements
+
+            - Android 7.0 (API level 24) or higher
+            - Permissions: Contacts, Phone
+
+      - name: Upload arm64-v8a APK
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: apps/mobile/android/app/build/outputs/apk/release/app-arm64-v8a-release.apk
+          asset_name: my-masjid-arm64-v8a-${{ steps.tag.outputs.tag }}.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      - name: Upload armeabi-v7a APK
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: apps/mobile/android/app/build/outputs/apk/release/app-armeabi-v7a-release.apk
+          asset_name: my-masjid-armeabi-v7a-${{ steps.tag.outputs.tag }}.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      - name: Upload x86_64 APK
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: apps/mobile/android/app/build/outputs/apk/release/app-x86_64-release.apk
+          asset_name: my-masjid-x86_64-${{ steps.tag.outputs.tag }}.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      - name: Upload x86 APK
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: apps/mobile/android/app/build/outputs/apk/release/app-x86-release.apk
+          asset_name: my-masjid-x86-${{ steps.tag.outputs.tag }}.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      - name: Upload metadata
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: apps/mobile/android/app/build/outputs/apk/release/output-metadata.json
+          asset_name: output-metadata.json
+          asset_content_type: application/json

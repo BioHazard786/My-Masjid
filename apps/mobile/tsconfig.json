@@ -1,0 +1,11 @@
+{
+  "extends": ["expo/tsconfig.base", "../../tsconfig.json"],
+  "references": [{ "path": "../api" }],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "nativewind-env.d.ts"
+  ]
+}

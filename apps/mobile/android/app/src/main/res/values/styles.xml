@@ -1,0 +1,47 @@
+<resources
+	xmlns:tools="http://schemas.android.com/tools">
+	<style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+		<item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="android:windowBackground">@color/windowBackground</item>
+		<item name="android:textColorPrimary">@color/colorForeground</item>
+		<item name="android:textColor">@color/colorForeground</item>
+		<item name="android:fontFamily">@font/poppins_400regular</item>
+		<item name="android:alertDialogTheme">@style/MyAlertDialogTheme</item>
+		<item name="alertDialogTheme">@style/MyAlertDialogTheme</item>
+		<item name="android:popupMenuStyle">@style/MyPopupMenu</item>
+	</style>
+
+	<style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+		<item name="windowSplashScreenBackground">@color/splashscreen_background</item>
+		<item name="windowSplashScreenAnimatedIcon">@drawable/splashscreen_logo</item>
+		<item name="postSplashScreenTheme">@style/AppTheme</item>
+	</style>
+  
+	<style name="MyAlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+		<item name="android:windowBackground">@drawable/dialog_background</item>
+		<item name="android:background">@color/windowBackground</item>
+		<item name="background">@color/windowBackground</item>
+		<item name="android:textColorPrimary">@color/colorSecondary</item>
+		<item name="android:textColor">@color/colorForeground</item>
+		<item name="android:textColorSecondary">@color/colorSecondary</item>
+		<item name="android:fontFamily">@font/poppins_400regular</item>
+		<item name="fontFamily">@font/poppins_400regular</item>
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorAccent">@color/colorAccent</item>
+		<item name="android:colorBackground">@color/windowBackground</item>
+		<item name="android:windowIsFloating">true</item>
+
+    <item name="buttonBarPositiveButtonStyle">@style/MyAlertDialogButton</item>
+    <item name="buttonBarNegativeButtonStyle">@style/MyAlertDialogButton</item>
+    <item name="buttonBarNeutralButtonStyle">@style/MyAlertDialogButton</item>
+	</style>
+
+  <style name="MyAlertDialogButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+    <item name="android:textColor">@color/colorAccent</item>
+  </style>
+
+	<style name="MyPopupMenu" parent="Widget.AppCompat.PopupMenu">
+		<item name="android:popupBackground">@drawable/menu_background</item>
+	</style>
+</resources>

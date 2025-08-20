@@ -1,0 +1,8 @@
+Initial release of My Masjid - 1.0.0 Updates:
+ - Find and search nearby mosques
+ - View accurate prayer times
+ - Multi-language support (English, Hindi, Urdu)
+ - Beautiful prayer time backgrounds
+ - Pin favorite masjids for quick access
+ - Admin features for masjid management
+ - Offline functionality

@@ -1,0 +1,20 @@
+<font-family xmlns:app="http://schemas.android.com/apk/res-auto">
+  <font app:font="@font/poppins_100thin" app:fontStyle="normal" app:fontWeight="100"/>
+  <font app:font="@font/poppins_100thin_italic" app:fontStyle="italic" app:fontWeight="100"/>
+  <font app:font="@font/poppins_200extra_light" app:fontStyle="normal" app:fontWeight="200"/>
+  <font app:font="@font/poppins_200extra_light_italic" app:fontStyle="italic" app:fontWeight="200"/>
+  <font app:font="@font/poppins_300light" app:fontStyle="normal" app:fontWeight="300"/>
+  <font app:font="@font/poppins_300light_italic" app:fontStyle="italic" app:fontWeight="300"/>
+  <font app:font="@font/poppins_400regular" app:fontStyle="normal" app:fontWeight="400"/>
+  <font app:font="@font/poppins_400regular_italic" app:fontStyle="italic" app:fontWeight="400"/>
+  <font app:font="@font/poppins_500medium" app:fontStyle="normal" app:fontWeight="500"/>
+  <font app:font="@font/poppins_500medium_italic" app:fontStyle="italic" app:fontWeight="500"/>
+  <font app:font="@font/poppins_600semi_bold" app:fontStyle="normal" app:fontWeight="600"/>
+  <font app:font="@font/poppins_600semi_bold_italic" app:fontStyle="italic" app:fontWeight="600"/>
+  <font app:font="@font/poppins_700bold" app:fontStyle="normal" app:fontWeight="700"/>
+  <font app:font="@font/poppins_700bold_italic" app:fontStyle="italic" app:fontWeight="700"/>
+  <font app:font="@font/poppins_800extra_bold" app:fontStyle="normal" app:fontWeight="800"/>
+  <font app:font="@font/poppins_800extra_bold_italic" app:fontStyle="italic" app:fontWeight="800"/>
+  <font app:font="@font/poppins_900black" app:fontStyle="normal" app:fontWeight="900"/>
+  <font app:font="@font/poppins_900black_italic" app:fontStyle="italic" app:fontWeight="900"/>
+</font-family>
