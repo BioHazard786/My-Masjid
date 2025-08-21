@@ -1,6 +1,6 @@
-# Contributing to Alternate
+# Contributing to My Masjid
 
-Thank you for your interest in contributing to Alternate! Your help is greatly appreciated. Please follow the guidelines below to ensure a smooth contribution process.
+Thank you for your interest in contributing to My Masjid! Your help is greatly appreciated. Please follow the guidelines below to ensure a smooth contribution process.
 
 ## How to Contribute
 
@@ -11,8 +11,8 @@ Thank you for your interest in contributing to Alternate! Your help is greatly a
    - Clone your forked repository to your local machine:
 
      ```bash
-     git clone https://github.com/BioHazard786/Alternate.git
-     cd Alternate
+     git clone https://github.com/YOUR_USERNAME/My-Masjid.git
+     cd My-Masjid
      ```
 
 3. **Create a Feature Branch**
