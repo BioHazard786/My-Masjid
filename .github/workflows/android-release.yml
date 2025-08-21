@@ -115,11 +115,21 @@ jobs:
             # Save bullet points to a file to preserve multiline content
             echo "$BULLET_POINTS" > changelog_bullets.txt
             echo "changelog_file=changelog_bullets.txt" >> $GITHUB_OUTPUT
+            
+            # Set changelog bullets as output variable for use in release body
+            echo "changelog_bullets<<EOF" >> $GITHUB_OUTPUT
+            echo "$BULLET_POINTS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
           else
             echo "version=${{ steps.tag.outputs.tag }}" >> $GITHUB_OUTPUT
             echo "description=Latest Release" >> $GITHUB_OUTPUT
             echo "- Latest improvements and bug fixes" > changelog_bullets.txt
             echo "changelog_file=changelog_bullets.txt" >> $GITHUB_OUTPUT
+            
+            # Set default changelog bullets as output variable
+            echo "changelog_bullets<<EOF" >> $GITHUB_OUTPUT
+            echo "- Latest improvements and bug fixes" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
           fi
 
       - name: Create Release
@@ -137,7 +147,7 @@ jobs:
 
             ## ✨ What's New in ${{ steps.tag.outputs.tag }}
 
-            $(cat changelog_bullets.txt)
+            ${{ steps.changelog.outputs.changelog_bullets }}
 
             ## 📦 Download Options
 
@@ -145,8 +155,7 @@ jobs:
 
             - **ARM64 (64-bit)** – Recommended for most modern devices  
             - **ARM (32-bit)** – For older Android devices  
-            - **x86 (64-bit)** – For Intel-based Android devices/emulators  
-            - **x86 (32-bit)** – For older Intel-based devices  
+            - **Universal** – For all device architectures  
 
             ## 🔧 Installation
 
@@ -157,7 +166,7 @@ jobs:
             ## 📋 System Requirements
 
             - Android 7.0 (API level 24) or higher
-            - Permissions: Internet
+            - Permissions: Internet, Notification
 
       - name: Upload arm64-v8a APK
         uses: actions/upload-release-asset@v1
