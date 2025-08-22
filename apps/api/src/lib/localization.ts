@@ -46,7 +46,8 @@ const notificationTranslations = {
     ur: "اوقات میں تبدیلی",
   },
   prayerTimesHaveBeenUpdated: {
-    en: "prayer times have been updated. Please check the app for the new schedule.",
+    en: (count: number) =>
+      `${count === 1 ? "prayer time" : "prayer times"} has been updated. Please check the app for the new schedule.`,
     hi: "की नमाज़ का समय बदल गया है। कृपया नए समय के लिए ऐप देखें।",
     ur: "کی نماز کے اوقات تبدیل ہو گئے ہیں۔ براہ کرم نیا شیڈول ملاحظہ فرمائیں۔",
   },
@@ -98,9 +99,8 @@ export function getLocalizedNotificationText(
   key: keyof typeof notificationTranslations,
   language: Language
 ): string {
-  return (
-    notificationTranslations[key][language] || notificationTranslations[key].en
-  );
+  const value = notificationTranslations[key][language] || notificationTranslations[key].en;
+  return typeof value === "function" ? value(1) : value;
 }
 
 /**
@@ -121,10 +121,13 @@ export function generateLocalizedNotification(
     "prayerTimeUpdated",
     language
   );
-  const bodySuffix = getLocalizedNotificationText(
-    "prayerTimesHaveBeenUpdated",
-    language
-  );
+  let bodySuffix;
+  if (language === "en") {
+    const value = notificationTranslations.prayerTimesHaveBeenUpdated.en;
+    bodySuffix = value(prayerKeys.length);
+  } else {
+    bodySuffix = notificationTranslations.prayerTimesHaveBeenUpdated[language];
+  }
 
   return {
     title: `${masjidName}: ${titleSuffix}`,

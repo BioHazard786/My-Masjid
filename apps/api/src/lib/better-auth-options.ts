@@ -14,14 +14,14 @@ export const betterAuthOptions: BetterAuthOptions = {
   },
   trustedOrigins: ["mymasjid://"],
   session: {
-    // Very long session expiry (1 year)
-    expiresIn: 60 * 60 * 24 * 365, // 365 days
+    // Very long session expiry (10 years)
+    expiresIn: 60 * 60 * 24 * 365 * 10, // 3650 days
     // Don't update session frequently to avoid unnecessary DB writes
     updateAge: 60 * 60 * 24 * 30, // Update every 30 days
     // Use secure cookies
     cookieCache: {
       enabled: true,
-      maxAge: 60 * 60 * 24 * 365, // 365 days
+      maxAge: 60 * 60 * 24 * 365 * 10, // 3650 days
     },
   },
 };
