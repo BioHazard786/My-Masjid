@@ -14,6 +14,7 @@ import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme, View } from "react-native";
+import ErrorBoundary from "@mobile/components/ErrorBoundary";
 
 // Custom themes that override React Navigation defaults
 const CustomLightTheme: Theme = {
@@ -64,23 +65,25 @@ function AppContent() {
 
 export default function RootLayout() {
   return (
-    <PersistQueryClientProvider
-      client={queryClient}
-      persistOptions={{
-        persister,
-        maxAge: 1000 * 60 * 60 * 24 * 24, // 24 days
-        dehydrateOptions: {
-          shouldDehydrateQuery: (query) =>
-            query.queryKey[0] === "persist" ? true : false,
-        },
-      }}
-      onSuccess={() => {
-        // Resume rendering on success
-        queryClient.resumePausedMutations();
-      }}
-    >
-      <AppContent />
-      {/* <DevToolsBubble queryClient={queryClient} /> */}
-    </PersistQueryClientProvider>
+    <ErrorBoundary>
+      <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={{
+          persister,
+          maxAge: 1000 * 60 * 60 * 24 * 24, // 24 days
+          dehydrateOptions: {
+            shouldDehydrateQuery: (query) =>
+              query.queryKey[0] === "persist" ? true : false,
+          },
+        }}
+        onSuccess={() => {
+          // Resume rendering on success
+          queryClient.resumePausedMutations();
+        }}
+      >
+        <AppContent />
+        {/* <DevToolsBubble queryClient={queryClient} /> */}
+      </PersistQueryClientProvider>
+    </ErrorBoundary>
   );
 }

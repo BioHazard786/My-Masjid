@@ -80,10 +80,10 @@ export default function SignInScreen() {
         <View className="flex-1 px-12 py-8">
           {/* Header */}
           <View className="mb-8 items-center">
-            <View className="size-16 bg-card rounded-full items-center justify-center mb-4">
+            <View className="size-16 bg-card rounded-full items-center justify-center mb-3">
               <Ionicons name="log-in" size={32} color={colors.accent} />
             </View>
-            <Text className="text-3xl font-bold text-primary mb-2 font-sans text-center">
+            <Text className="text-3xl font-bold text-primary mb-2 font-sans text-center" style={{ lineHeight: 40 }}>
               {t("auth.welcomeBack")}
             </Text>
             <Text className="text-secondary text-base font-sans text-center max-w-sm">
@@ -116,10 +116,9 @@ export default function SignInScreen() {
                       textAlignVertical: "center",
                     }}
                   />
-                  {!field.state.meta.isValid &&
-                    field.state.meta.errors.length > 0 && (
+                  {!field.state.meta.isValid && (
                       <Text className="text-red-500 text-xs font-sans mt-2">
-                        {String(field.state.meta.errors[0])}
+                        {field.state.meta.errors[0]?.message}
                       </Text>
                     )}
                 </View>
@@ -148,10 +147,9 @@ export default function SignInScreen() {
                       textAlignVertical: "center",
                     }}
                   />
-                  {!field.state.meta.isValid &&
-                    field.state.meta.errors.length > 0 && (
+                  {!field.state.meta.isValid && (
                       <Text className="text-red-500 text-xs font-sans mt-2">
-                        {String(field.state.meta.errors[0])}
+                        {field.state.meta.errors[0]?.message}
                       </Text>
                     )}
                 </View>

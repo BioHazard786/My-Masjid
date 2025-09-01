@@ -103,10 +103,10 @@ export default function SignUpScreen() {
         <View className="flex-1 px-12 py-8">
           {/* Header */}
           <View className="mb-8 items-center">
-            <View className="size-16 bg-card rounded-full items-center justify-center mb-4">
+            <View className="size-16 bg-card rounded-full items-center justify-center mb-3">
               <Ionicons name="person-add" size={32} color={colors.accent} />
             </View>
-            <Text className="text-3xl font-bold text-primary mb-2 font-sans text-center">
+            <Text className="text-3xl font-bold text-primary mb-2 font-sans text-center" style={{ lineHeight: 40 }}>
               {t("auth.createMasjidAccount")}
             </Text>
             <Text className="text-secondary text-base font-sans text-center max-w-sm">

@@ -9,7 +9,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useRef, useState } from "react";
 import {
-  ActivityIndicator,
   Pressable,
   RefreshControl,
   Text,
