@@ -2,67 +2,67 @@ import { Ionicons } from "@expo/vector-icons";
 import { useI18n } from "@mobile/hooks/use-i18n";
 import { useChangePreferredLanguage } from "@mobile/hooks/use-masjid";
 import { useThemeColors } from "@mobile/hooks/use-theme-color";
-import { cn } from "@mobile/lib/utils";
+import { cn } from "@packages/utils";
 import { MenuView } from "@react-native-menu/menu";
 import { Text, View } from "react-native";
 
 interface LanguageSwitcherProps {
-  className?: string;
+	className?: string;
 }
 
 export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
-  const colors = useThemeColors();
-  const { mutate: server_changePreferredLanguage } =
-    useChangePreferredLanguage();
-  const { t, changeLanguage, getCurrentLanguage, getLanguageLabel } = useI18n();
-  const currentLanguage = getCurrentLanguage();
+	const colors = useThemeColors();
+	const { mutate: server_changePreferredLanguage } =
+		useChangePreferredLanguage();
+	const { t, changeLanguage, getCurrentLanguage, getLanguageLabel } = useI18n();
+	const currentLanguage = getCurrentLanguage();
 
-  return (
-    <MenuView
-      onPressAction={({ nativeEvent }) => {
-        const selectedLanguage = nativeEvent.event;
-        if (currentLanguage === selectedLanguage) return;
-        changeLanguage(selectedLanguage);
-        server_changePreferredLanguage(selectedLanguage);
-      }}
-      title={t("common.language")}
-      actions={[
-        {
-          id: "en",
-          title: getLanguageLabel("en"),
-          state: currentLanguage === "en" ? "on" : "off",
-        },
-        {
-          id: "hi",
-          title: getLanguageLabel("hi"),
-          state: currentLanguage === "hi" ? "on" : "off",
-        },
-        {
-          id: "ur",
-          title: getLanguageLabel("ur"),
-          state: currentLanguage === "ur" ? "on" : "off",
-        },
-      ]}
-    >
-      <View
-        className={cn(
-          "flex-row items-center justify-center bg-card p-3 rounded-lg",
-          className
-        )}
-      >
-        <Ionicons name="language" size={20} color={colors.accent} />
-        <Text className="text-primary font-sans ml-2">
-          {getLanguageLabel(currentLanguage)}
-        </Text>
-        <Ionicons
-          name="chevron-down"
-          size={16}
-          color={colors.secondary}
-          style={{ marginLeft: 4 }}
-        />
-      </View>
+	return (
+		<MenuView
+			onPressAction={({ nativeEvent }) => {
+				const selectedLanguage = nativeEvent.event;
+				if (currentLanguage === selectedLanguage) return;
+				changeLanguage(selectedLanguage);
+				server_changePreferredLanguage(selectedLanguage);
+			}}
+			title={t("common.language")}
+			actions={[
+				{
+					id: "en",
+					title: getLanguageLabel("en"),
+					state: currentLanguage === "en" ? "on" : "off",
+				},
+				{
+					id: "hi",
+					title: getLanguageLabel("hi"),
+					state: currentLanguage === "hi" ? "on" : "off",
+				},
+				{
+					id: "ur",
+					title: getLanguageLabel("ur"),
+					state: currentLanguage === "ur" ? "on" : "off",
+				},
+			]}
+		>
+			<View
+				className={cn(
+					"flex-row items-center justify-center bg-card p-3 rounded-lg",
+					className,
+				)}
+			>
+				<Ionicons name="language" size={20} color={colors.accent} />
+				<Text className="text-primary font-sans ml-2">
+					{getLanguageLabel(currentLanguage)}
+				</Text>
+				<Ionicons
+					name="chevron-down"
+					size={16}
+					color={colors.secondary}
+					style={{ marginLeft: 4 }}
+				/>
+			</View>
 
-      {/* <Modal
+			{/* <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -105,6 +105,6 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
           </View>
         </View>
       </Modal> */}
-    </MenuView>
-  );
+		</MenuView>
+	);
 }

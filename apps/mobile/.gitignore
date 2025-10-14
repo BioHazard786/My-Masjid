@@ -17,8 +17,6 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
-*.keystore
-keystore.properties
 
 # Metro
 .metro-health-check*
@@ -38,4 +36,18 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-app-example
+# APK files (keep generated APKs out of source control)
+*.apk
+*.aab
+
+# Android build files
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+
+# Android release files
+android/app/release/
+
+# Test files
+test.ts
