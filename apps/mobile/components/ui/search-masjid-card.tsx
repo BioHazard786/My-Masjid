@@ -17,6 +17,9 @@ import {
 	cn,
 	formatTimeFromISOString,
 	getNextPrayerInfo,
+	shouldShowEidUlAzhaTimes,
+	shouldShowEidUlFitrTimes,
+	shouldShowRamadanTimes,
 } from "@packages/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -52,6 +55,11 @@ export function SearchMasjidCard({
 	const isCurrentlyPinned = pinnedMasjidIds.includes(masjid.id);
 
 	const getNextPrayer = () => {
+		const currentHijriDate = new Date();
+		const showRamadan = shouldShowRamadanTimes(currentHijriDate);
+		const showEidUlFitr = shouldShowEidUlFitrTimes(currentHijriDate);
+		const showEidUlAzha = shouldShowEidUlAzhaTimes(currentHijriDate);
+
 		const prayerTimes = [
 			{ name: "Fajr", time: masjid.fajr },
 			{ name: "Dhuhr", time: masjid.dhuhr },
@@ -60,6 +68,19 @@ export function SearchMasjidCard({
 			{ name: "Isha", time: masjid.isha },
 			{ name: "Jummah", time: masjid.jummah },
 		];
+
+		if (showRamadan && masjid.sehar) {
+			prayerTimes.push({ name: "Sehar", time: masjid.sehar });
+		}
+		if (showRamadan && masjid.iftar) {
+			prayerTimes.push({ name: "Iftar", time: masjid.iftar });
+		}
+		if (showEidUlFitr && masjid.eidUlFitr) {
+			prayerTimes.push({ name: "Eid Ul Fitr", time: masjid.eidUlFitr });
+		}
+		if (showEidUlAzha && masjid.eidUlAzha) {
+			prayerTimes.push({ name: "Eid Ul Azha", time: masjid.eidUlAzha });
+		}
 
 		const { name } = getNextPrayerInfo({
 			prayerTimes,

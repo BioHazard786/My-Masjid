@@ -118,7 +118,11 @@
     "jummah": "Jummah",
     "sunrise": "Sunrise",
     "today": "Today",
-    "tomorrow": "Tomorrow"
+    "tomorrow": "Tomorrow",
+    "sehar": "Sehar",
+    "iftar": "Iftar",
+    "eid ul fitr": "Eid ul Fitr",
+    "eid ul azha": "Eid ul Azha"
   },
   "time": {
     "am": "AM",

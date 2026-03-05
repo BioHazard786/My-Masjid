@@ -1,12 +1,12 @@
 import useI18n from "@mobile/hooks/use-i18n";
 import {
-	changePreferredLanguage,
-	createMasjid,
-	getMasjidById,
-	pinMasjid,
-	searchMasjids,
-	unpinMasjid,
-	updatePrayerTimes,
+    changePreferredLanguage,
+    createMasjid,
+    getMasjidById,
+    pinMasjid,
+    searchMasjids,
+    unpinMasjid,
+    updatePrayerTimes,
 } from "@mobile/lib/api";
 import useExpoPushTokenStore from "@mobile/store/expo-push-token-store";
 import usePinMasjidStore from "@mobile/store/pin-masjid-store";
@@ -108,6 +108,10 @@ export const usePrayerTimes = (masjidId: string) => {
 				addressEn: masjidProfile.addressEn,
 				addressHi: masjidProfile.addressHi,
 				addressUr: masjidProfile.addressUr,
+				sehar: masjidProfile.sehar,
+				iftar: masjidProfile.iftar,
+				eidUlFitr: masjidProfile.eidUlFitr,
+				eidUlAzha: masjidProfile.eidUlAzha,
 			}
 		: null;
 

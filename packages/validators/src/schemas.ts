@@ -18,6 +18,10 @@ export const prayerTimesSchema = z.object({
 	maghrib: z.string().optional().nullable(),
 	isha: z.string().optional().nullable(),
 	jummah: z.string().optional().nullable(),
+	sehar: z.string().optional().nullable(),
+	iftar: z.string().optional().nullable(),
+	eidUlFitr: z.string().optional().nullable(),
+	eidUlAzha: z.string().optional().nullable(),
 });
 
 // You can also add schemas for user routes here if needed

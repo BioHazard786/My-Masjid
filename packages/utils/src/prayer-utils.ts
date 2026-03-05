@@ -1,4 +1,7 @@
-import type { PrayerTimes } from "@mobile/lib/types";
+type PrayerTimes = {
+  name: string;
+  time: string | null | undefined;
+}[]
 
 export const getCurrentPrayer = (
 	prayerTimes: PrayerTimes,

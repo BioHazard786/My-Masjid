@@ -118,7 +118,11 @@
     "jummah": "जुम्मा",
     "sunrise": "सूर्योदय",
     "today": "आज",
-    "tomorrow": "कल"
+    "tomorrow": "कल",
+    "sehar": "सेहरी",
+    "iftar": "इफ्तार",
+    "eid ul fitr": "ईद उल-फ़ित्र",
+    "eid ul azha": "ईद उल-अज़हा"
   },
   "time": {
     "am": "AM",

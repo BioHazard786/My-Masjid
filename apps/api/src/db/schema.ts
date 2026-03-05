@@ -23,6 +23,10 @@ export const masjids = sqliteTable("masjids", {
   maghrib: text("maghrib"),
   isha: text("isha"),
   jummah: text("jummah"),
+  sehar: text("sehar"),
+  iftar: text("iftar"),
+  eidUlFitr: text("eid_ul_fitr"),
+  eidUlAzha: text("eid_ul_azha"),
 });
 
 /**

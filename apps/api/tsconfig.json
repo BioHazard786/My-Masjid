@@ -9,6 +9,8 @@
     "baseUrl": ".",
     "paths": {
       "@api/*": ["./src/*"],
+      "@packages/validators": ["../../packages/validators/src/index.ts"],
+      "@packages/utils": ["../../packages/utils/src/index.ts"],
       "@packages/*": ["../../packages/*"]
     }
   },

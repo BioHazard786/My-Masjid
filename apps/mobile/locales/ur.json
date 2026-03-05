@@ -118,7 +118,11 @@
     "jummah": "جمعہ",
     "sunrise": "طلوع آفتاب",
     "today": "آج",
-    "tomorrow": "کل"
+    "tomorrow": "کل",
+    "sehar": "سحری",
+    "iftar": "افطار",
+    "eid ul fitr": "عید الفطر",
+    "eid ul azha": "عید الاضحی"
   },
   "time": {
     "am": "AM",

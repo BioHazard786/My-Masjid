@@ -15,6 +15,9 @@ import {
 	formatTimeFromISOString,
 	getCurrentPrayer,
 	getRelativeTimeToNow,
+	shouldShowEidUlAzhaTimes,
+	shouldShowEidUlFitrTimes,
+	shouldShowRamadanTimes,
 } from "@packages/utils";
 import { ImageBackground } from "expo-image";
 import { useEffect, useState } from "react";
@@ -133,7 +136,50 @@ export function PinMasjidCard({ masjidId, className }: PinMasjidCardProps) {
 
 	const prayerTimes = formatPrayerTime(prayerData);
 
-	const currentPrayer = getCurrentPrayer(prayerTimes, currentTime);
+	// Filter prayer times based on Hijri date
+	const currentHijriDate = new Date();
+	const showRamadan = shouldShowRamadanTimes(currentHijriDate);
+	const showEidUlFitr = shouldShowEidUlFitrTimes(currentHijriDate);
+	const showEidUlAzha = shouldShowEidUlAzhaTimes(currentHijriDate);
+
+	const finalPrayerTimes = [...prayerTimes];
+
+	// Insert Sehar at start (before Fajr)
+	if (showRamadan && masjidInfo?.sehar) {
+		finalPrayerTimes.unshift({ name: "Sehar", time: masjidInfo.sehar });
+	}
+
+	// Insert Iftar after Asr (before Maghrib)
+	if (showRamadan && masjidInfo?.iftar) {
+		const maghribIndex = finalPrayerTimes.findIndex((p) => p.name === "Maghrib");
+		if (maghribIndex !== -1) {
+			finalPrayerTimes.splice(maghribIndex, 0, { name: "Iftar", time: masjidInfo.iftar });
+		} else {
+			finalPrayerTimes.push({ name: "Iftar", time: masjidInfo.iftar });
+		}
+	}
+
+	// Eid times
+	if (showEidUlFitr && masjidInfo?.eidUlFitr) {
+		// Eid is usually morning/forenoon. Add after Fajr.
+		const dhuhrIndex = finalPrayerTimes.findIndex((p) => p.name === "Dhuhr" || p.name === "Jummah");
+		if (dhuhrIndex !== -1) {
+			finalPrayerTimes.splice(dhuhrIndex, 0, { name: "Eid Ul Fitr", time: masjidInfo.eidUlFitr });
+		} else {
+			finalPrayerTimes.push({ name: "Eid Ul Fitr", time: masjidInfo.eidUlFitr });
+		}
+	}
+    
+    if (showEidUlAzha && masjidInfo?.eidUlAzha) {
+		const dhuhrIndex = finalPrayerTimes.findIndex((p) => p.name === "Dhuhr" || p.name === "Jummah");
+		if (dhuhrIndex !== -1) {
+			finalPrayerTimes.splice(dhuhrIndex, 0, { name: "Eid Ul Azha", time: masjidInfo.eidUlAzha });
+		} else {
+			finalPrayerTimes.push({ name: "Eid Ul Azha", time: masjidInfo.eidUlAzha });
+		}
+	}
+
+	const currentPrayer = getCurrentPrayer(finalPrayerTimes, currentTime);
 
 	// Get dynamic background based on current prayer and masjid ID
 	const backgroundImage = getConsistentPrayerBackground(
@@ -226,7 +272,7 @@ export function PinMasjidCard({ masjidId, className }: PinMasjidCardProps) {
 				</View>
 
 				<View className="pb-2">
-					{prayerTimes.map((prayer, index) => (
+					{finalPrayerTimes.map((prayer, index) => (
 						<View key={prayer.name}>
 							<PrayerTimeItem
 								name={prayer.name}
@@ -234,7 +280,7 @@ export function PinMasjidCard({ masjidId, className }: PinMasjidCardProps) {
 								isActive={currentPrayer === prayer.name}
 								currentTime={currentTime}
 							/>
-							{index < prayerTimes.length - 1 && (
+							{index < finalPrayerTimes.length - 1 && (
 								<View className="mx-6 h-px bg-tertiary" />
 							)}
 						</View>
